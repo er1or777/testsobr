@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Росгвардия СОБР — Тестирование</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="scroll-progress"></div>
+
+    <header class="header" id="header">
+        <div class="header-inner">
+            <a href="#" class="brand" id="brandHome">
+                <span class="brand-icon">★</span>
+                <span class="brand-text">РОСГВАРДИЯ СОБР</span>
+            </a>
+            <nav class="nav-menu" id="navMenu">
+                <a href="#tests" data-nav="tests">Тесты</a>
+                <a href="#results" data-nav="results">Мои результаты</a>
+                <a href="#admin" data-nav="admin" id="adminNavLink">Админ-панель</a>
+            </nav>
+            <button class="burger" id="burger" aria-label="Меню">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- HERO -->
+        <section class="hero" id="home">
+            <div class="hero-content">
+                <div class="hero-badge">Служебная подготовка</div>
+                <h1 class="hero-title">Система тестирования<br><span>СОБР Росгвардии</span></h1>
+                <p class="hero-sub">Пройдите аттестационные тесты, проверьте уровень подготовки и получите результат мгновенно. Порог сдачи — 80% верных ответов.</p>
+                <div class="hero-actions">
+                    <a href="#tests" class="cta-button">Перейти к тестам</a>
+                    <a href="#results" class="cta-button cta-ghost">Мои результаты</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- STATS -->
+        <section class="stats" id="stats">
+            <div class="stats-inner">
+                <div class="stat-item">
+                    <span class="stat-number" data-target="0" data-suffix="">0</span>
+                    <span class="stat-label">Доступных тестов</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-target="80" data-suffix="%">0%</span>
+                    <span class="stat-label">Порог сдачи</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-target="0" data-suffix="">0</span>
+                    <span class="stat-label">Пройдено попыток</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- TESTS LIST -->
+        <section class="section" id="tests">
+            <div class="section-head">
+                <h2>Доступные тесты</h2>
+                <p>Выберите тест для прохождения. Перед началом потребуется указать ФИО и ID.</p>
+            </div>
+            <div class="tests-grid" id="testsGrid">
+                <div class="empty-state" id="testsEmpty">
+                    <div class="empty-icon">📋</div>
+                    <p>Тесты пока не добавлены. Ожидайте публикации администратором.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- RESULTS -->
+        <section class="section section-alt" id="results">
+            <div class="section-head">
+                <h2>Мои результаты</h2>
+                <p>Введите ваш ID, чтобы увидеть историю прохождения тестов.</p>
+            </div>
+            <div class="results-search">
+                <input type="text" id="resultsIdInput" placeholder="Введите ваш ID">
+                <button class="btn-primary" id="resultsSearchBtn">Показать</button>
+            </div>
+            <div class="results-list" id="resultsList"></div>
+        </section>
+
+        <!-- ADMIN -->
+        <section class="section" id="admin">
+            <div class="section-head">
+                <h2>Админ-панель</h2>
+                <p>Управление тестами, просмотр результатов и назначение кураторов.</p>
+            </div>
+
+            <div class="admin-login" id="adminLogin">
+                <h3>Вход для персонала</h3>
+                <div class="form-row">
+                    <label>Логин</label>
+                    <input type="text" id="adminLoginInput" placeholder="Логин">
+                </div>
+                <div class="form-row">
+                    <label>Пароль</label>
+                    <input type="password" id="adminPassInput" placeholder="Пароль">
+                </div>
+                <button class="btn-primary" id="adminLoginBtn">Войти</button>
+                <p class="login-hint" id="loginHint"></p>
+            </div>
+
+            <div class="admin-panel hidden" id="adminPanel">
+                <div class="admin-tabs">
+                    <button class="admin-tab active" data-tab="tabTests">Тесты</button>
+                    <button class="admin-tab" data-tab="tabResults">Результаты</button>
+                    <button class="admin-tab" data-tab="tabCurators">Кураторы</button>
+                </div>
+
+                <!-- TAB: TESTS -->
+                <div class="admin-tab-content active" id="tabTests">
+                    <div class="admin-toolbar">
+                        <h3>Создание теста</h3>
+                        <button class="btn-secondary" id="addTestBtn">+ Новый тест</button>
+                    </div>
+                    <div class="test-form hidden" id="testForm">
+                        <div class="form-row">
+                            <label>Название теста</label>
+                            <input type="text" id="testTitle" placeholder="Например: Огневая подготовка">
+                        </div>
+                        <div class="form-row">
+                            <label>Описание</label>
+                            <input type="text" id="testDesc" placeholder="Краткое описание">
+                        </div>
+                        <div class="questions-wrap" id="questionsWrap"></div>
+                        <button class="btn-secondary" id="addQuestionBtn">+ Добавить вопрос</button>
+                        <div class="form-actions">
+                            <button class="btn-primary" id="saveTestBtn">Сохранить тест</button>
+                            <button class="btn-ghost" id="cancelTestBtn">Отмена</button>
+                        </div>
+                    </div>
+                    <div class="admin-list" id="adminTestsList"></div>
+                </div>
+
+                <!-- TAB: RESULTS -->
+                <div class="admin-tab-content" id="tabResults">
+                    <div class="admin-toolbar">
+                        <h3>Все результаты</h3>
+                        <button class="btn-ghost" id="refreshResultsBtn">Обновить</button>
+                    </div>
+                    <div class="admin-list" id="adminResultsList"></div>
+                </div>
+
+                <!-- TAB: CURATORS -->
+                <div class="admin-tab-content" id="tabCurators">
+                    <div class="admin-toolbar">
+                        <h3>Кураторы</h3>
+                    </div>
+                    <div class="curator-form">
+                        <div class="form-row">
+                            <label>Логин куратора</label>
+                            <input type="text" id="curatorLogin" placeholder="Логин">
+                        </div>
+                        <div class="form-row">
+                            <label>Пароль</label>
+                            <input type="password" id="curatorPass" placeholder="Пароль">
+                        </div>
+                        <button class="btn-primary" id="addCuratorBtn">Назначить куратора</button>
+                    </div>
+                    <div class="admin-list" id="curatorsList"></div>
+                </div>
+
+                <button class="btn-ghost logout-btn" id="logoutBtn">Выйти</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- TEST MODAL -->
+    <div class="modal-overlay hidden" id="testModal">
+        <div class="modal">
+            <button class="modal-close" id="modalClose">×</button>
+            <div class="modal-step" id="stepStart">
+                <h2 class="modal-title" id="modalTestTitle">Тест</h2>
+                <p class="modal-desc" id="modalTestDesc"></p>
+                <div class="form-row">
+                    <label>Фамилия Имя Отчество</label>
+                    <input type="text" id="userFio" placeholder="Иванов Иван Иванович">
+                </div>
+                <div class="form-row">
+                    <label>ID сотрудника</label>
+                    <input type="text" id="userId" placeholder="Например: 12345">
+                </div>
+                <button class="btn-primary btn-block" id="startTestBtn">Начать тест</button>
+                <p class="form-error" id="startError"></p>
+            </div>
+
+            <div class="modal-step hidden" id="stepQuiz">
+                <div class="quiz-header">
+                    <span class="quiz-progress-text" id="quizProgressText">Вопрос 1 из 10</span>
+                    <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quizProgressFill"></div></div>
+                </div>
+                <h3 class="question-text" id="questionText"></h3>
+                <div class="options-list" id="optionsList"></div>
+                <div class="quiz-nav">
+                    <button class="btn-ghost" id="prevQBtn">Назад</button>
+                    <button class="btn-primary" id="nextQBtn">Далее</button>
+                </div>
+            </div>
+
+            <div class="modal-step hidden" id="stepResult">
+                <div class="result-badge" id="resultBadge"></div>
+                <h2 class="result-title" id="resultTitle"></h2>
+                <p class="result-score" id="resultScore"></p>
+                <div class="result-detail" id="resultDetail"></div>
+                <button class="btn-primary btn-block" id="closeResultBtn">Закрыть</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-brand">★ РОСГВАРДИЯ СОБР</div>
+            <p class="footer-desc">Система служебного тестирования и аттестации личного состава.</p>
+            <div class="footer-links">
+                <a href="#tests">Тесты</a>
+                <a href="#results">Результаты</a>
+                <a href="#admin">Админ-панель</a>
+            </div>
+            <p class="footer-copy">© 2026 Росгвардия СОБР. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
